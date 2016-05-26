@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Ken.js
+	</title>
+</head>
+<body>
+<div>
+	<h1>To Greg</h1>
+	<div style="float:left">
+	<label>Date</label>
+	<input id="date" type="number"/>
+	</div>
+
+	<div style="float:left">
+		<label>Month</label>
+		<input id="month" type="number"/>
+	</div>
+
+	<div style="float:left">
+		<label>Year</label>
+		<input id="year" type="number"/>
+	</div>
+
+	<div style="float:left">
+		
+		<button onclick="convert()">Convert</button>
+	</div>
+	<br/>
+	<div>
+		<h1 id="result"></h1>	
+	</div>
+</div>
+
+<br/>
+<br/>
+
+<div>
+	<h1>To Eth</h1>
+	<div style="float:left">
+	<label>Date</label>
+	<input id="dateEth" type="number"/>
+	</div>
+
+	<div style="float:left">
+		<label>Month</label>
+		<input id="monthEth" type="number"/>
+	</div>
+
+	<div style="float:left">
+		<label>Year</label>
+		<input id="yearEth" type="number"/>
+	</div>
+
+	<div style="float:left">
+		
+		<button onclick="convertToEth()">Convert</button>
+	</div>
+	<br/>
+	<div>
+		<h1 id="resultEth"></h1>	
+	</div>
+</div>
+
+<script type="text/javascript" src="../ken.js"></script>
+<script type="text/javascript">
+
+	var convert = function(){
+		date=document.getElementById('date').value;
+		month=document.getElementById('month').value;
+		year=document.getElementById('year').value;
+		var ken = new Ken();
+		document.getElementById('result').innerHTML=ken.toGreg(parseInt(date)+"-"+parseInt(month)+"-"+parseInt(year));
+	}
+
+	var convertToEth = function(){
+		date=document.getElementById('dateEth').value;
+		month=document.getElementById('monthEth').value;
+		year=document.getElementById('yearEth').value;
+		var ken = new Ken();		
+		document.getElementById('resultEth').innerHTML=ken.toEth(parseInt(date)+"-"+parseInt(month)+"-"+parseInt(year));
+	}
+</script>
+</body>
+
+</html>
