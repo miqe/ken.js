@@ -1,4 +1,4 @@
-# ken.js
+# ken.js ቀን.ጄስ
 #A very lightweight gregorian to Ethiopian calendar converter and vice versa.
 
 #Very easy to use
