@@ -7,6 +7,11 @@
 var Ken = function(){
     //function to convert Ethipian calendar to Gregorian calendar
         var toGreg=function(dd,mm,yy){
+            //if month is 13 change it to 12 + day
+            if(mm==13){
+                mm=12;
+                dd=30+dd;
+            }
             //calculates leap year for greg calendar
         	var isLeapYear=function(year){
         		if((year%4==0 && year%100!=0)|| year%400==0){
@@ -140,6 +145,13 @@ var Ken = function(){
             }
         	_mm = addMonth(mm,monthDiff);	
         	_yy = yy-yearDiff;
+
+
+            if(_mm==12 && _dd>30){
+                _mm=13;
+                _dd=_dd%30;
+            }
+
             return _dd+"-"+_mm+"-"+_yy;
         }
         //Just a simple validation beore date calculation
