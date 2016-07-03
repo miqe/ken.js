@@ -158,7 +158,8 @@ var Ken = function(){
         var toEthReception = function(fulldate){
             if(typeof fulldate == "object"){
                 if(fulldate instanceof Date){
-                    return toEth(fulldate.getDate(),fulldate.getMonth(),fulldate.getFullYear());
+                    console.log('DDdate 0bu');
+                    return toEth(fulldate.getDate(),fulldate.getMonth()+1,fulldate.getFullYear());
                 }else{
                     showError('Not a date object');
                 }
