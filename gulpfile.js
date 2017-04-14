@@ -14,5 +14,5 @@ gulp.task('default', [], function () {
             index : './example/index.html'
         }
     });
-    gulp.watch("ken.js/*.js", ['watch']);
+    gulp.watch("ken.js", ['watch']);
 });
