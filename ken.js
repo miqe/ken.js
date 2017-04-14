@@ -80,7 +80,7 @@ var Ken = function(){
         var toEth=function(dd,mm,yy){
             //calculates leapyear for eth calendar
         	var isLeapYear=function(year){
-        		year = year -1;
+        		year = year + 1;
         		if((year%4==0 && year%100!=0)|| year%400==0){
         			return true
         		}
@@ -94,8 +94,9 @@ var Ken = function(){
         	var dayChangePoint = [10,9,10,9,9,8,8,7,11,11,10,10];
             //check the year for leap year and then set values
             if(isLeapYear(yy)){
+                console.log('leap year')
         	    ethDateDiff =    [22,23,21,22,22,23,23,24,25,20,21,21];
-        		dayChangePoint = [9,8,10,9,9,8,8,7,11,11,10,10];
+        		dayChangePoint = [9,8,10,9,9,8,8,7,12,11,10,10];
         	}
             //Days in a month for ethiopian calendar
             //Hamle and Puagme are merged
@@ -138,12 +139,12 @@ var Ken = function(){
         		dateDiff=ethDateDiff[mm-1];
             	_dd=addDate(dd,dateDiff,mm-1)
             	monthDiff=monthDiff+1;
-            }else{
+            }else{ 
             	dateDiff=ethDateDiff[mm-1];
             	_dd=addDate(dd,dateDiff,mm-1)
             	monthDiff=monthDiff+1;
             }
-        	_mm = addMonth(mm,monthDiff);	
+        	_mm = addMonth(mm,monthDiff);	 
         	_yy = yy-yearDiff;
 
 
