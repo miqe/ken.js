@@ -36,16 +36,6 @@ $ bower install ken.js --save
   //to get a javascript date object
   converter.toGC().getDateInstance(); //output: converter.toGC().getDateInstance()
 ```
-##### then use the use method before the user sends SMS
-
-``` 
-  Package.use(token,1).then(function(usage){ 
-    //it will return current package usage count
-    // it will return -1 if the package reached/passed its limit
-    // if it returns -1 then you won't send the SMS for that user
-    // and obviously if it returns count then the user is good to go
-  });
-```
 
 ### to convert to Ethiopian directly from date object:
 
