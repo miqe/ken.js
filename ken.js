@@ -4,9 +4,13 @@
 *
 *         ***********With Love from Miqe***********
 */
-var Ken = function(){
+var ken = function(rawDate){
     //function to convert Ethipian calendar to Gregorian calendar
-        var toGreg=function(dd,mm,yy){
+        var convertToGreg=function(date){
+            var dd =date.parsed.getDate();
+            var mm =date.parsed.getMonth()+1;
+            var yy =date.parsed.getFullYear();
+
             //if month is 13 change it to 12 + day
             if(mm==13){
                 mm=12;
@@ -74,10 +78,34 @@ var Ken = function(){
 
          	_mm = addMonth(mm,monthDiff);	
         	_yy = yy+yearDiff;
-            return _dd+"-"+_mm+"-"+_yy;
+
+           
+            return {
+                parsed:date.parsed,
+                date:[_yy,_mm,_dd],
+                getDate:function(){
+                    return parseInt(this.date[2]);
+                },
+                getMonth:function(){
+                    return parseInt(this.date[1]);   
+                },
+                getFullYear:function(){
+                    return parseInt(this.date[0]);   
+                },
+                toString:function(){
+                    return this.date[0]+"-"+((this.date[1]/10)>1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>1?this.date[2]:"0"+this.date[2]);
+                },
+                getDateInstance:function(){
+                    return new Date(this.date.toString())
+                }
+            };
         }
         //function to convert Gregorian calendar to Ethiopian calendar
-        var toEth=function(dd,mm,yy){
+        var convertToEt=function(date){
+            var dd =date.parsed.getDate();
+            var mm =date.parsed.getMonth()+1;
+            var yy =date.parsed.getFullYear();
+
             //calculates leapyear for eth calendar
         	var isLeapYear=function(year){
         		year = year + 1;
@@ -94,7 +122,6 @@ var Ken = function(){
         	var dayChangePoint = [10,9,10,9,9,8,8,7,11,11,10,10];
             //check the year for leap year and then set values
             if(isLeapYear(yy)){
-                console.log('leap year')
         	    ethDateDiff =    [22,23,21,22,22,23,23,24,25,20,21,21];
         		dayChangePoint = [9,8,10,9,9,8,8,7,12,11,10,10];
         	}
@@ -153,87 +180,113 @@ var Ken = function(){
                 _dd=_dd%30;
             }
 
-            return _dd+"-"+_mm+"-"+_yy;
-        }
-        //Just a simple validation beore date calculation
-        var toEthReception = function(fulldate){
-            if(typeof fulldate == "object"){
-                if(fulldate instanceof Date){
-                    console.log('DDdate 0bu');
-                    return toEth(fulldate.getDate(),fulldate.getMonth()+1,fulldate.getFullYear());
-                }else{
-                    showError('Not a date object');
+            return {
+                parsed:date.parsed,
+                date:[_yy,_mm,_dd],
+                getDate:function(){
+                    return parseInt(this.date[2]);
+                },
+                getMonth:function(){
+                    return parseInt(this.date[1]);   
+                },
+                getFullYear:function(){
+                    return parseInt(this.date[0]);   
+                },
+                toString:function(){
+                    return this.date[0]+"-"+((this.date[1]/10)>1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>1?this.date[2]:"0"+this.date[2]);
                 }
-            }else if(typeof fulldate == "string"){
-                if(fulldate.indexOf("-")||fulldate.indexOf("/")){
-                    if(fulldate.indexOf("-")){
-                        var separated = fulldate.split("-");
-                        if(separated.length ==3){
-                            return toEth(parseInt(separated[0]),parseInt(separated[1]),parseInt(separated[2]));
-                        }else{
-                            showError('Incorrect Format'); 
-                        }
-                    }else if(fulldate.indexOf("/")){
-                        var separated = fulldate.split("-");
-                        if(separated.length ==3){
-                            return toEth(parseInt(separated[0]),parseInt(separated[1]),parseInt(separated[2]));
-                        }else{
-                          showError('Incorrect Format');                         
-                        }
-                    }else{                    
-                        showError('Incorrect Format');       
-                    }
-                }else{
-                    showError('Incorrect Format');                
-                }
-            }else{
-                 showError('Invalid Input');
-            }
+            };
         }
-        //Another simple validation beore date calculation
-        var toGregReception = function(fulldate){
-            if(typeof fulldate == "string"){
-                if(fulldate.indexOf("-")||fulldate.indexOf("/")){
-                    if(fulldate.indexOf("-")){
-                        var separated = fulldate.split("-");
-                        if(separated.length ==3){
-                            return toGreg(parseInt(separated[0]),parseInt(separated[1]),parseInt(separated[2]));
+        function toEt(){
+            return convertToEt(this);
+        };
 
-                        }else{
-                            showError('Incorrect Format'); 
-                        }
-                    }else if(fulldate.indexOf("/")){
-                        var separated = fulldate.split("-");
-                        if(separated.length ==3){
-                            return toGreg(parseInt(separated[0]),parseInt(separated[1]),parseInt(separated[2]));
-                        }else{
-                          showError('Incorrect Format');                         
-                        }
-                    }else{                    
-                        showError('Incorrect Format');       
+        function toGreg(){
+            return convertToGreg(this);
+        };
+
+
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+        function IllegalArgumentException(eMessage) {
+            this.name = "IllegalArgumentException";
+            this.message = eMessage || 'Invalid date supplied';
+            this.stack = (new Error()).stack;
+        }
+        IllegalArgumentException.prototype = Object.create(Error.prototype);
+        IllegalArgumentException.prototype.constructor = IllegalArgumentException;
+
+      
+      function generateDateObjcet(date){
+            return {
+                parsed:{
+                    date:date,
+                    getDate:function(){
+                        return parseInt(this.date[2]);
+                    },
+                    getMonth:function(){
+                        return parseInt(this.date[1]);   
+                    },
+                    getFullYear:function(){
+                        return parseInt(this.date[0]);   
                     }
-                }else{
-                    showError('Incorrect Format');                
-                }
-            }else{
-                 showError('Invalid Input');
+                },
+                toGC:toGreg,
+                toEC:toEt
             }
         }
-        //To log error message to console
-        var showError = function(msg){
-            console.error(msg);
+
+        
+       //http://stackoverflow.com/a/10638617/2147627
+       function parseFromString(date){
+            var y = date.substr(0,4),
+                m = date.substr(5,2) - 1,
+                d = date.substr(8,2);
+
+            if( (y && m && d) != null){
+                return [y,m,d];
+            }else{
+                throw  new IllegalArgumentException();
+            }            
+       }
+
+
+       function parseFromDate(date){
+            var y = date.getFullYear(),
+                m = date.getMonth()+1,
+                d = date.getDate();
+            if( (y && m && d) != null){
+                return [y,m,d];
+            }else{
+                throw  new IllegalArgumentException();
+            }
+       }
+       function parseFromKen(date){
+           if(date.parsed){
+                var y = date.parsed.getFullYear(),
+                    m = date.parsed.getMonth(),
+                    d = date.parsed.getDate();
+                if( (y && m && d) != null){
+                    return [y,m,d];
+                }
+           }
+            
+            throw  new IllegalArgumentException();
+       }
+
+        if(typeof rawDate == "object"){
+            if(rawDate instanceof Date)
+                return generateDateObjcet(parseFromDate(rawDate));
+            else 
+                return generateDateObjcet(parseFromKen(rawDate));
+        }else if(typeof rawDate == "string"){
+            return generateDateObjcet(parseFromString(rawDate));
         }
-        //exposed values and functions
-        return {
-            toEth:toEthReception,
-            toGreg:toGregReception
-        }
+        throw  new IllegalArgumentException("invalid parameter");  
 }
 
 //Add toEth function to javascript Date object using protypical inheritance    
 if(Date){
-    Date.prototype.toEth=function(){
-        var ken = new Ken();
-        return ken.toEth(this.getDate()+"-"+this.getMonth()+"-"+this.getFullYear());
+    Date.prototype.toEC=function(){
+        return ken(this).toEC();
     }
 }
