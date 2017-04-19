@@ -284,9 +284,3 @@ var ken = function(rawDate){
         throw  new IllegalArgumentException("invalid parameter");  
 }
 
-//Add toEth function to javascript Date object using protypical inheritance    
-if(Date){
-    Date.prototype.toEC=function(){
-        return ken(this).toEC();
-    }
-}
