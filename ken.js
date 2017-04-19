@@ -215,7 +215,7 @@ var ken = function(rawDate){
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
         function IllegalArgumentException(eMessage) {
             this.name = "IllegalArgumentException";
-            this.message = eMessage || 'Invalid date supplied';
+            this.message = eMessage || 'Invalid date supplied, try YYYY-MM-DD format';
             this.stack = (new Error()).stack;
         }
         IllegalArgumentException.prototype = Object.create(Error.prototype);
@@ -247,8 +247,7 @@ var ken = function(rawDate){
             var y = date.substr(0,4),
                 m = date.substr(5,2) - 1,
                 d = date.substr(8,2);
-
-            if( (y && m && d) != null){
+            if( (!isNaN(y) && !isNaN(m) && !isNaN(d))){
                 return [y,m,d];
             }else{
                 throw  new IllegalArgumentException();
