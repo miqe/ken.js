@@ -7,25 +7,22 @@
 </head>
 <body>
 <div>
-	<h1>To Greg</h1>
-	<div style="float:left">
-	<label>Date</label>
-	<input id="date" type="number"/>
-	</div>
+	<h1>Convert to Gregorian</h1>
 
 	<div style="float:left">
-		<label>Month</label>
-		<input id="month" type="number"/>
-	</div>
-
-	<div style="float:left">
-		<label>Year</label>
+		<label>Year(YYYY)</label>
 		<input id="year" type="number"/>
 	</div>
-
 	<div style="float:left">
-		
-		<button onclick="convert()">Convert</button>
+		<label>Month(MM)</label>
+		<input id="month" type="number"/>
+	</div>
+	<div style="float:left">
+		<label>Date(DD)</label>
+		<input id="date" type="number"/>
+	</div>
+	<div style="float:left">		
+		<button onclick="convertToGreg()">Convert</button>
 	</div>
 	<br/>
 	<div>
@@ -37,22 +34,19 @@
 <br/>
 
 <div>
-	<h1>To Eth</h1>
+	<h1>Convert To Ethiopian</h1>
 	<div style="float:left">
-	<label>Date</label>
-	<input id="dateEth" type="number"/>
-	</div>
-
-	<div style="float:left">
-		<label>Month</label>
-		<input id="monthEth" type="number"/>
-	</div>
-
-	<div style="float:left">
-		<label>Year</label>
+		<label>Year(YYYY)</label>
 		<input id="yearEth" type="number"/>
 	</div>
-
+	<div style="float:left">
+		<label>Month(MM)</label>
+		<input id="monthEth" type="number"/>
+	</div>
+	<div style="float:left">
+		<label>Date(DD)</label>
+		<input id="dateEth" type="number"/>
+	</div>
 	<div style="float:left">
 		
 		<button onclick="convertToEth()">Convert</button>
@@ -66,20 +60,23 @@
 <script type="text/javascript" src="../ken.js"></script>
 <script type="text/javascript">
 
-	var convert = function(){
+	var convertToGreg = function(){
 		date=document.getElementById('date').value;
 		month=document.getElementById('month').value;
 		year=document.getElementById('year').value;
-		var ken = new Ken();
-		document.getElementById('result').innerHTML=ken.toGreg(parseInt(date)+"-"+parseInt(month)+"-"+parseInt(year));
+		console.log(document.getElementById('year'));
+		var converter = ken(year+"-"+month+"-"+date);
+		console.log("ssssssss",year+"-"+month+"-"+date);
+		document.getElementById('result').innerHTML=converter.toGC().toString();
 	}
 
 	var convertToEth = function(){
 		date=document.getElementById('dateEth').value;
 		month=document.getElementById('monthEth').value;
 		year=document.getElementById('yearEth').value;
-		var ken = new Ken();		
-		document.getElementById('resultEth').innerHTML=ken.toEth(parseInt(date)+"-"+parseInt(month)+"-"+parseInt(year));
+		var converter = ken(year+"-"+month+"-"+date);
+		console.log(converter.toEC().toString());
+		document.getElementById('resultEth').innerHTML=converter.toEC().toString();
 	}
 </script>
 </body>
