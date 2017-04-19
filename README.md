@@ -40,6 +40,12 @@ $ bower install ken.js --save
 ### to convert to Ethiopian directly from date object:
 
 ```
+//add toEC to Date object
+Date.prototype.toEC=function(){
+    return ken(this).toEC();
+}
+
+//then simply do
 var today = new Date();
 today.toEC().toString(); 
 ```

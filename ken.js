@@ -57,7 +57,7 @@ var ken = function(rawDate){
             var yearDiff= 7;
             //check for the month and day and if it is greater than the new year 
             //then the it will add 1 to year diffrence
-            if(parseFloat(mm+"."+dd)>=parseFloat("4.22")){
+            if(parseFloat(mm+""+dd)>=422){
             	yearDiff=yearDiff+1;
             }
             var dateDiff= 0;	
@@ -83,6 +83,9 @@ var ken = function(rawDate){
             return {
                 parsed:date.parsed,
                 date:[_yy,_mm,_dd],
+                isLeapYear:function(){
+                    return isLeapYear(this.date[0]);
+                },
                 getDate:function(){
                     return parseInt(this.date[2]);
                 },
@@ -150,7 +153,7 @@ var ken = function(rawDate){
             var yearDiff= 8;
             //check for the month and day and if it is greater than the new year 
             //then the it will add 1 to year diffrence
-            if(parseFloat(mm+"."+dd)>=parseFloat("09.11")){
+            if(parseFloat(mm+""+dd)>=(isLeapYear(yy)?912:911)){
             	yearDiff=yearDiff-1;
             }
 
@@ -183,6 +186,9 @@ var ken = function(rawDate){
             return {
                 parsed:date.parsed,
                 date:[_yy,_mm,_dd],
+                isLeapYear:function(){
+                    return isLeapYear(this.date[0]);
+                },
                 getDate:function(){
                     return parseInt(this.date[2]);
                 },
@@ -209,7 +215,7 @@ var ken = function(rawDate){
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
         function IllegalArgumentException(eMessage) {
             this.name = "IllegalArgumentException";
-            this.message = eMessage || 'Invalid date supplied';
+            this.message = eMessage || 'Invalid date supplied, try YYYY-MM-DD format';
             this.stack = (new Error()).stack;
         }
         IllegalArgumentException.prototype = Object.create(Error.prototype);
@@ -241,8 +247,7 @@ var ken = function(rawDate){
             var y = date.substr(0,4),
                 m = date.substr(5,2) - 1,
                 d = date.substr(8,2);
-
-            if( (y && m && d) != null){
+            if( (!isNaN(y) && !isNaN(m) && !isNaN(d))){
                 return [y,m,d];
             }else{
                 throw  new IllegalArgumentException();
@@ -284,9 +289,3 @@ var ken = function(rawDate){
         throw  new IllegalArgumentException("invalid parameter");  
 }
 
-//Add toEth function to javascript Date object using protypical inheritance    
-if(Date){
-    Date.prototype.toEC=function(){
-        return ken(this).toEC();
-    }
-}
