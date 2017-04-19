@@ -1,0 +1,22 @@
+{
+  "name": "ken.js",
+  "description": "Ethiopian to Gregorian date converter",
+  "main": "ken.js",
+  "authors": [
+    "mike <michaelsahlu@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "date",
+    "converter",
+    "ethiopian"
+  ],
+  "homepage": "https://github.com/Miqe/ken.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

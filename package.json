@@ -1,7 +1,7 @@
 {
   "name": "ken.js",
   "version": "0.0.4",
-  "description": "#Very easy to use var ken = new Ken();",
+  "description": "Ethiopian to Gregorian date converter",
   "main": "ken.js",
   "directories": {
     "example": "example"
