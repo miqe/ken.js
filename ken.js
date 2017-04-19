@@ -57,7 +57,7 @@ var ken = function(rawDate){
             var yearDiff= 7;
             //check for the month and day and if it is greater than the new year 
             //then the it will add 1 to year diffrence
-            if(parseFloat(mm+"."+dd)>=parseFloat("4.22")){
+            if(parseFloat(mm+""+dd)>=422){
             	yearDiff=yearDiff+1;
             }
             var dateDiff= 0;	
@@ -83,6 +83,9 @@ var ken = function(rawDate){
             return {
                 parsed:date.parsed,
                 date:[_yy,_mm,_dd],
+                isLeapYear:function(){
+                    return isLeapYear(this.date[0]);
+                },
                 getDate:function(){
                     return parseInt(this.date[2]);
                 },
@@ -150,7 +153,7 @@ var ken = function(rawDate){
             var yearDiff= 8;
             //check for the month and day and if it is greater than the new year 
             //then the it will add 1 to year diffrence
-            if(parseFloat(mm+"."+dd)>=parseFloat("09.11")){
+            if(parseFloat(mm+""+dd)>=(isLeapYear(yy)?912:911)){
             	yearDiff=yearDiff-1;
             }
 
@@ -183,6 +186,9 @@ var ken = function(rawDate){
             return {
                 parsed:date.parsed,
                 date:[_yy,_mm,_dd],
+                isLeapYear:function(){
+                    return isLeapYear(this.date[0]);
+                },
                 getDate:function(){
                     return parseInt(this.date[2]);
                 },
