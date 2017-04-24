@@ -289,3 +289,7 @@ var ken = function(rawDate){
         throw  new IllegalArgumentException("invalid parameter");  
 }
 
+//the if statment is to make it compatible with the browser and node.js environment. 
+if (typeof exports !== 'undefined') {
+   exports.ken = ken
+}
