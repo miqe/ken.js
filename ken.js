@@ -257,7 +257,7 @@ var ken = function(rawDate){
 
        function parseFromDate(date){
             var y = date.getFullYear(),
-                m = date.getMonth()+1,
+                m = date.getMonth(),
                 d = date.getDate();
             if( (y && m && d) != null){
                 return [y,m,d];
