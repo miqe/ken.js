@@ -24,5 +24,7 @@
     "browser-sync": "^2.18.8"
   },
   "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }

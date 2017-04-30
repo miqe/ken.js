@@ -257,7 +257,7 @@ var ken = function(rawDate){
 
        function parseFromDate(date){
             var y = date.getFullYear(),
-                m = date.getMonth()+1,
+                m = date.getMonth(),
                 d = date.getDate();
             if( (y && m && d) != null){
                 return [y,m,d];
@@ -289,3 +289,7 @@ var ken = function(rawDate){
         throw  new IllegalArgumentException("invalid parameter");  
 }
 
+//the if statment is to make it compatible with the browser and node.js environment. 
+if (typeof exports !== 'undefined') {
+   exports.ken = ken
+}
