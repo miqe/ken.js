@@ -199,7 +199,7 @@ var ken = function(rawDate){
                     return parseInt(this.date[0]);   
                 },
                 toString:function(){
-                    return this.date[0]+"-"+((this.date[1]/10)>1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>1?this.date[2]:"0"+this.date[2]);
+                    return this.date[0]+"-"+((this.date[1]/10)>=1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>=1?this.date[2]:"0"+this.date[2]);
                 }
             };
         }
