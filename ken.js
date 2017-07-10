@@ -57,7 +57,7 @@ var ken = function(rawDate){
             var yearDiff= 7;
             //check for the month and day and if it is greater than the new year 
             //then the it will add 1 to year diffrence
-            if(parseFloat(mm+""+dd)>=422){
+            if(mm>4 || (mm==4 && dd >= 22) ){
             	yearDiff=yearDiff+1;
             }
             var dateDiff= 0;	
@@ -153,10 +153,10 @@ var ken = function(rawDate){
             var yearDiff= 8;
             //check for the month and day and if it is greater than the new year 
             //then the it will add 1 to year diffrence
-            if(parseFloat(mm+""+dd)>=(isLeapYear(yy)?912:911)){
-            	yearDiff=yearDiff-1;
+            if(mm>9 || (mm==9 && dd >= (isLeapYear(yy)?12:11) ) ) {
+            	yearDiff=yearDiff -1;
             }
-
+            
             var dateDiff= 0;	
             //default month difference when counted from the end
             var monthDiff= 3;
