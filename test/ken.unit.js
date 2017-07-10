@@ -91,7 +91,35 @@ let testData = [{
         gc: "0011-08-27",
         jdn: 1725316
     },
-
+     // start -- dates taken from https://github.com/Zenysis/ethiopian-date/blob/master/test.js
+    {
+        et: "1975-03-12",
+        gc: "1982-11-21"
+    },
+    {
+        et: "2007-04-01",
+        gc: "2014-12-10"
+    },
+    {
+        et: "2003-04-11",
+        gc: "2010-12-20"
+    },
+    {   
+        et: "1975-03-12",
+        gc: "1982-11-21"
+    },
+    {   
+        et: "1934-03-28",
+        gc: "1941-12-07"
+    },
+    {
+        et: "2003-04-13",
+        gc: "2010-12-22"
+    },{
+        et: "2009-09-08",
+        gc: "2017-05-16"
+    }
+    // end -- dates taken from https://github.com/Zenysis/ethiopian-date/blob/master/test.js
 
 ];
 
