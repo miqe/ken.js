@@ -1,6 +1,6 @@
 {
   "name": "ken.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Ethiopian to Gregorian date converter",
   "main": "ken.js",
   "directories": {
