@@ -1,88 +1,87 @@
 /*        
 *         Ken.js 
-*         A lightweight gregorian to Ethiopian calendar converter and vice versa
+*         A Gregorian calendar to Ethiopic calendar converter and vice versa
 *
-*         ***********With Love from Miqe***********
 */
 var ken = function(rawDate){
+    //http://www.geez.org/Calendars/
+    var getJDNFromEthiopic = function(date){
+      var ethiopicOffset = 1723856;
+      var year= date[0],month=date[1],day=date[2];
+      var JDN = (ethiopicOffset + 365 ) + (365 * (year -1)) + (30 * month) + (day -31) + (Math.floor(year/4) );
+      return JDN;
+    };
+    //http://www.geez.org/Calendars/
+    var getEthiopicFromJDN = function(jdn){
+      var ethiopicOffset = 1723856;
+      var r = ((jdn - ethiopicOffset) % 1461);
+      var n = ( r % 365 ) +  365 * Math.floor(r/1460) ;
+      var year = ( 4 * Math.floor((jdn - ethiopicOffset)/1461) ) + Math.floor(r/365) - Math.floor(r/1460);
+      var month  =  Math.floor( n/ 30 ) + 1 ;
+      var day  = ( n % 30 ) + 1 ;
+      return [year,month,day];
+    };
+    //http://www.cs.utsa.edu/~cs1063/projects/Spring2011/Project1/jdn-explanation.html
+    var getJDNFromGregorian =function(date){
+      var year=date[0];
+      var month=date[1];
+      var day=date[2];
+      var a = Math.floor((14-month)/12);
+      var y = Math.floor(year+4800-a);
+      var m = month+12*a-3;
+      var JDN = day + Math.floor((153*m+2)/5)+(365*y)+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;
+      return JDN;
+    };
+    //http://www.csgnetwork.com/juliangregcalconv.html
+    var getGregorianFromJDN =function(jdn){
+        var julDate = jdn ;
+        var z = Math.floor(julDate);
+        var f = julDate - z;
+        if (z < 2299161) {
+          var A = z;
+        }
+        else {
+          var omega = Math.floor((z-1867216.25)/36524.25);
+          var A = z + 1 + omega - Math.floor(omega/4);
+        }
+        var B = A + 1524;
+        var C = Math.floor((B-122.1)/365.25);
+        var D = Math.floor(365.25*C);
+        var Epsilon = Math.floor((B-D)/30.6001);
+        var dayGreg = B - D - Math.floor(30.6001*Epsilon) + f;
+        if (Epsilon < 14) {
+          monthGreg = Epsilon - 1;
+        }
+        else {
+          monthGreg = Epsilon - 13;
+        }
+        if (monthGreg > 2) {
+          yearGreg = C - 4716;
+        }
+        else {
+          yearGreg = C - 4715;
+        }
+        
+        return [yearGreg,monthGreg,dayGreg];
+    };
     //function to convert Ethipian calendar to Gregorian calendar
-        var convertToGreg=function(date){
-            var dd =date.parsed.getDate();
-            var mm =date.parsed.getMonth()+1;
-            var yy =date.parsed.getFullYear();
-
-            //if month is 13 change it to 12 + day
-            if(mm==13){
-                mm=12;
-                dd=30+dd;
-            }
-            //calculates leap year for greg calendar
-        	var isLeapYear=function(year){
-        		if((year%4==0 && year%100!=0)|| year%400==0){
-        			return true
-        		}
-        		else
-        			return false;
-        	}	
-        	//starts with sept(9th month) or meskerem in eth calendar
-        	var gregDateDiff =   [10,10,9 ,9 ,8,7,9,8,8,7,7,6];
-        	//
-            var dayChangePoint = [21,22,22,23,24,22,23,23,24,24,25,26];
-        	//check the year for leap year and then set values
-            if(isLeapYear(yy)){
-        		gregDateDiff =   [11,11,10,10,9,8,9,8,8,7,7,6];
-        		dayChangePoint = [20,21,21,22,23,22,23,23,24,24,25,26];
-        	}
-            //Days in a month for greg calendar
-            //Position of the Ethiopian month is based on Ethiopian calendar eg: sept(09)->Meskerem(01)
-            var gregMonthDays =  [30,31,30,31,31,(isLeapYear(yy)?29:28),31,30,31,30,31,31];
-            //This function calculates the date to be added
-            var addDate = function(dd,diff,index){
-            	if((dd+diff) < gregMonthDays[index]){
-            		return dd+diff;
-            	}else if((dd+diff) == gregMonthDays[index]){
-        			return dd+diff;
-            	}else{
-            		return ((dd+diff)%gregMonthDays[index])
-            	} 
-            }
-            //This function calculates the months to be added
-            var addMonth = function(mm,diff){
-            	if((mm + diff) <= 12)
-            		return mm+diff;
-            	else
-            		return ((mm+diff)%12);
-            }
-            //default year diffrence to add. 
-            var yearDiff= 7;
-            //check for the month and day and if it is greater than the new year 
-            //then the it will add 1 to year diffrence
-            if(parseFloat(mm+""+dd)>=422){
-            	yearDiff=yearDiff+1;
-            }
-            var dateDiff= 0;	
-            var monthDiff= 8;
-            var _dd=0,_mm=0,_yy=0;
-
-            //this section checks for dates to get the turning point
-            if(dd < dayChangePoint[mm-1]){
-                dateDiff=gregDateDiff[mm-1];
-            	_dd=addDate(dd,dateDiff,mm-1)
-            }else if(dd == dayChangePoint[mm-1]){dateDiff=gregDateDiff[mm-1];
-            	_dd=addDate(dd,dateDiff,mm-1)
-            	monthDiff=monthDiff+1;
-            }else{dateDiff=gregDateDiff[mm-1];
-            	_dd=addDate(dd,dateDiff,mm-1)
-            	monthDiff=monthDiff+1;
-            }
-
-         	_mm = addMonth(mm,monthDiff);	
-        	_yy = yy+yearDiff;
-
-           
+    var convertToGreg=function(date){
+            var jdn = getJDNFromEthiopic([
+              date.parsed.getFullYear(),
+              date.parsed.getMonth()+1,
+              date.parsed.getDate()
+            ]);
+            var date = getGregorianFromJDN(jdn);
+            var isLeapYear=function(year){
+              if((year%4==0 && year%100!=0)|| year%400==0){
+                return true
+              }
+              else
+                return false;
+            };        	
             return {
                 parsed:date.parsed,
-                date:[_yy,_mm,_dd],
+                date:date,
                 isLeapYear:function(){
                     return isLeapYear(this.date[0]);
                 },
@@ -96,96 +95,40 @@ var ken = function(rawDate){
                     return parseInt(this.date[0]);   
                 },
                 toString:function(){
-                    return this.date[0]+"-"+((this.date[1]/10)>1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>1?this.date[2]:"0"+this.date[2]);
+                    return this.date[0]+"-"+((this.date[1]/10)>=1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>=1?this.date[2]:"0"+this.date[2]);
                 },
                 getDateInstance:function(){
                     return new Date(this.date.toString())
+                },
+                getMonthDate:function(){
+                    var tempInstance = this.getDateInstance();
+                    tempInstance.setMonth(tempInstance.getMonth() +1);
+                    tempInstance.setDate(0);
+                    return tempInstance.getDate();
                 }
             };
-        }
+        };
         //function to convert Gregorian calendar to Ethiopian calendar
         var convertToEt=function(date){
-            var dd =date.parsed.getDate();
-            var mm =date.parsed.getMonth()+1;
-            var yy =date.parsed.getFullYear();
-
+            var jdn = getJDNFromGregorian([
+              date.parsed.getFullYear(),
+              date.parsed.getMonth()+1,
+              date.parsed.getDate()
+            ]);
+            var date = getEthiopicFromJDN(jdn);
             //calculates leapyear for eth calendar
-        	var isLeapYear=function(year){
-        		year = year + 1;
-        		if((year%4==0 && year%100!=0)|| year%400==0){
-        			return true
-        		}
-        		else
-        			return false;
-        	}	
-        	//starts with Jan(9th month) or Tahisas in eth calendar
-        	// var gregDateDiff =   [10,10,9 ,9 ,8,7,9,8,8,7,7,6];
-        	var ethDateDiff =    [21,22,21,22,22,23,23,24,25,20,21,21];	
-            //The dates that Ethiopian calendar turn to 1 on gregorian calendar
-        	var dayChangePoint = [10,9,10,9,9,8,8,7,11,11,10,10];
-            //check the year for leap year and then set values
-            if(isLeapYear(yy)){
-        	    ethDateDiff =    [22,23,21,22,22,23,23,24,25,20,21,21];
-        		dayChangePoint = [9,8,10,9,9,8,8,7,12,11,10,10];
-        	}
-            //Days in a month for ethiopian calendar
-            //Hamle and Puagme are merged
-            //Position of the Ethiopian month is based on gregorian calendar eg: Meskerem(01)->sept(09)
-            var ethMonthDays =  [30,30,30,30,30,30,30,30,(isLeapYear(yy)?36:35),30,30,30];
-            //This function calculates the date to be added
-            var addDate = function(dd,diff,index){
-            	if((dd+diff) < ethMonthDays[index]){
-            		return dd+diff;
-            	}else if((dd+diff) == ethMonthDays[index]){
-        			return dd+diff;
-            	}else{
-            		return ((dd+diff)%ethMonthDays[index])
-            	} 
-            }
-            //This function calculates the months to be added
-            var addMonth = function(mm,diff){
-            	if((mm + diff) <= 12)
-            		return mm+diff;
-            	else
-            		return ((mm+diff)%12);
-            }
-            //default year diffrence to add. 
-            var yearDiff= 8;
-            //check for the month and day and if it is greater than the new year 
-            //then the it will add 1 to year diffrence
-            if(parseFloat(mm+""+dd)>=(isLeapYear(yy)?912:911)){
-            	yearDiff=yearDiff-1;
-            }
-
-            var dateDiff= 0;	
-            //default month difference when counted from the end
-            var monthDiff= 3;
-            var _dd=0,_mm=0,_yy=0;
-            //this section checks for dates to get the turning point
-            if(dd < dayChangePoint[mm-1]){
-            	dateDiff=ethDateDiff[mm-1];
-            	_dd=addDate(dd,dateDiff,mm-1)
-            }else if(dd == dayChangePoint[mm-1]){
-        		dateDiff=ethDateDiff[mm-1];
-            	_dd=addDate(dd,dateDiff,mm-1)
-            	monthDiff=monthDiff+1;
-            }else{ 
-            	dateDiff=ethDateDiff[mm-1];
-            	_dd=addDate(dd,dateDiff,mm-1)
-            	monthDiff=monthDiff+1;
-            }
-        	_mm = addMonth(mm,monthDiff);	 
-        	_yy = yy-yearDiff;
-
-
-            if(_mm==12 && _dd>30){
-                _mm=13;
-                _dd=_dd%30;
-            }
-
+            var isLeapYear=function(year){
+              year = year + 1;
+              if((year%4==0 && year%100!=0)|| year%400==0){
+                return true
+              }
+              else
+                return false;
+            };
+        
             return {
                 parsed:date.parsed,
-                date:[_yy,_mm,_dd],
+                date:date,
                 isLeapYear:function(){
                     return isLeapYear(this.date[0]);
                 },
@@ -199,16 +142,36 @@ var ken = function(rawDate){
                     return parseInt(this.date[0]);   
                 },
                 toString:function(){
-                    return this.date[0]+"-"+((this.date[1]/10)>1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>1?this.date[2]:"0"+this.date[2]);
+                    return this.date[0]+"-"+((this.date[1]/10)>=1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>=1?this.date[2]:"0"+this.date[2]);
+                },
+                getMonthDate:function(){
+                    if(this.date[1] == 13){
+                        if(this.isLeapYear()){
+                            return 6;
+                        }else{
+                            return 5;
+                        }
+                    }else{
+                        return 30;
+                    }
                 }
             };
-        }
+        };
         function toEt(){
             return convertToEt(this);
         };
 
         function toGreg(){
             return convertToGreg(this);
+        };
+
+
+        function getEt(){            
+            return convertToEt(generateDateObjcet(parseFromString(convertToGreg(this).toString())));
+        };
+
+        function getGreg(){
+            return convertToGreg(generateDateObjcet(parseFromString(convertToEt(this).toString())));
         };
 
 
@@ -237,7 +200,9 @@ var ken = function(rawDate){
                     }
                 },
                 toGC:toGreg,
-                toEC:toEt
+                toEC:toEt,
+                getGC:getGreg,
+                getEC:getEt
             }
         }
 
@@ -265,14 +230,9 @@ var ken = function(rawDate){
                 throw  new IllegalArgumentException();
             }
        }
-       function parseFromKen(date){
-           if(date.parsed){
-                var y = date.parsed.getFullYear(),
-                    m = date.parsed.getMonth(),
-                    d = date.parsed.getDate();
-                if( (y && m && d) != null){
-                    return [y,m,d];
-                }
+       function parseFromKen(kenDate){
+           if(kenDate.date){
+                return kenDate.date;
            }
             
             throw  new IllegalArgumentException();
@@ -285,6 +245,8 @@ var ken = function(rawDate){
                 return generateDateObjcet(parseFromKen(rawDate));
         }else if(typeof rawDate == "string"){
             return generateDateObjcet(parseFromString(rawDate));
+        }else if(typeof rawDate == "undefined"){
+            return generateDateObjcet(parseFromDate(new Date()));
         }
         throw  new IllegalArgumentException("invalid parameter");  
 }
