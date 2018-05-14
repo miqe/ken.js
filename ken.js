@@ -65,6 +65,7 @@ var ken = function(rawDate){
         return [yearGreg,monthGreg,dayGreg];
     };
     //function to convert Ethipian calendar to Gregorian calendar
+
     var convertToGreg=function(date){
             var jdn = getJDNFromEthiopic([
               date.parsed.getFullYear(),
@@ -79,6 +80,7 @@ var ken = function(rawDate){
               else
                 return false;
             };        	
+
             return {
                 parsed:date.parsed,
                 date:date,
@@ -117,6 +119,7 @@ var ken = function(rawDate){
             ]);
             var date = getEthiopicFromJDN(jdn);
             //calculates leapyear for eth calendar
+
             var isLeapYear=function(year){
               year = year + 1;
               if((year%4==0 && year%100!=0)|| year%400==0){
@@ -126,6 +129,7 @@ var ken = function(rawDate){
                 return false;
             };
         
+
             return {
                 parsed:date.parsed,
                 date:date,
@@ -143,6 +147,7 @@ var ken = function(rawDate){
                 },
                 toString:function(){
                     return this.date[0]+"-"+((this.date[1]/10)>=1?this.date[1]:"0"+this.date[1])+"-"+((this.date[2]/10)>=1?this.date[2]:"0"+this.date[2]);
+
                 },
                 getMonthDate:function(){
                     if(this.date[1] == 13){

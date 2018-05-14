@@ -1,6 +1,6 @@
 
 #  Ken.js (ቀን.ጄኤስ)
-
+## A date converter which uses pattern based algorithm to convert ethiopian date to gregorian and vice versa
 ### Ethiopian Date converter
 #### it works for both the browser and node.js
 
@@ -37,7 +37,7 @@ $ bower install ken.js --save
   converter.toGC().getDateInstance(); //output: converter.toGC().getDateInstance()
 ```
 
-### to convert to Ethiopian directly from date object:
+##### to convert to Ethiopian directly from date object:
 
 ```
 //add toEC to Date object
@@ -49,4 +49,10 @@ Date.prototype.toEC=function(){
 var today = new Date();
 today.toEC().toString(); 
 ```
+
+### Testing:
+```sh
+$ npm test  > test-result.log 2>&1
+```
+##### i.e because the test usecase uses iteration, please change the output of the test to a file.
 
